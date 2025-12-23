@@ -4,11 +4,11 @@ from flask_cors import CORS
 # from dotenv import load_dotenv  # Temporarily commented for local testing
 from routers.auth import auth_bp
 from routers.owners import owners_bp
-from routers.proporty import property_bp
+from routers.property import property_bp
 from routers.fintrans import fintrans_bp
 from routers.servTrans import servtrans_bp
 from routers.contract import contract_bp
-from routers.tanant import tenant_bp
+from routers.tenant import tenant_bp
 from routers.users import users_bp
 from routers.reports import reports_bp
 
