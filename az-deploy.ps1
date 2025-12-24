@@ -4,7 +4,7 @@ Write-Host "Starting deployment script..."
 
 # Set paths
 $tempZip = "$env:TEMP\deploy.zip"
-$sourcePaths = "backend_v2", "frontend", "startup.sh"
+$sourcePaths = "React (3)/React/PMA/backend2", "React (3)/React/PMA/frontend"
 
 Write-Host "Collecting files to zip from: $($sourcePaths -join ', ')"
 
