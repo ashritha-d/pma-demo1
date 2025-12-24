@@ -9,11 +9,16 @@ $tempDir = "$env:TEMP\deploy"
 Write-Host "Creating temp directory at $tempDir..."
 New-Item -ItemType Directory -Path $tempDir -Force
 
+Write-Host "Building frontend..."
+Push-Location "React (3)/React/PMA/frontend"
+npm run build
+Pop-Location
+
 Write-Host "Copying backend files..."
 Copy-Item "React (3)/React/PMA/backend2\*" $tempDir -Recurse -Force
 
-Write-Host "Copying frontend files..."
-Copy-Item "React (3)/React/PMA/frontend\*" "$tempDir\frontend" -Recurse -Force
+Write-Host "Copying built frontend to backend build directory..."
+Copy-Item "React (3)/React/PMA/frontend\build\*" "$tempDir\build" -Recurse -Force
 
 # Get files to include, excluding certain directories
 $files = Get-ChildItem -Path $tempDir -Recurse | Where-Object {
