@@ -11,6 +11,9 @@ from email.message import EmailMessage
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 import requests
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
 
 FAST2SMS_API_KEY = os.getenv("FAST2SMS_API_KEY")
 
@@ -24,6 +27,7 @@ UPLOAD_FOLDER = "uploads"  # or any folder name you prefer
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)  # ✅ Create the folder if not exists
 # ------------------ DATABASE CONNECTION ------------------
 def get_project_db():
+    logging.info("Attempting to connect to project database")
     try:
         conn = mysql.connector.connect(
             host="localhost",
@@ -32,9 +36,10 @@ def get_project_db():
             database="project"
         )
         if conn.is_connected():
+            logging.info("Database connected successfully")
             return conn
     except Error as e:
-        print(f"Error connecting to database: {e}")
+        logging.error(f"Error connecting to database: {e}")
         return None
     
 def get_owners_db():
