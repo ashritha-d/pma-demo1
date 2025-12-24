@@ -4,12 +4,19 @@ Write-Host "Starting deployment script..."
 
 # Set paths
 $tempZip = "$env:TEMP\deploy.zip"
-$sourcePaths = "React (3)/React/PMA/backend2", "React (3)/React/PMA/frontend"
+$tempDir = "$env:TEMP\deploy"
 
-Write-Host "Collecting files to zip from: $($sourcePaths -join ', ')"
+Write-Host "Creating temp directory at $tempDir..."
+New-Item -ItemType Directory -Path $tempDir -Force
+
+Write-Host "Copying backend files..."
+Copy-Item "React (3)/React/PMA/backend2\*" $tempDir -Recurse -Force
+
+Write-Host "Copying frontend files..."
+Copy-Item "React (3)/React/PMA/frontend\*" "$tempDir\frontend" -Recurse -Force
 
 # Get files to include, excluding certain directories
-$files = Get-ChildItem -Path $sourcePaths -Recurse | Where-Object {
+$files = Get-ChildItem -Path $tempDir -Recurse | Where-Object {
     $_.FullName -notmatch '\\\.venv|\\node_modules|\\.git|__pycache__'
 }
 
@@ -18,6 +25,9 @@ Write-Host "Found $($files.Count) files to include in the zip."
 # Create zip
 Write-Host "Creating zip archive at $tempZip..."
 Compress-Archive -Path $files.FullName -DestinationPath $tempZip -Force
+
+# Clean up temp dir
+Remove-Item $tempDir -Recurse -Force
 
 if (Test-Path $tempZip) {
     Write-Host "Zip created successfully."
